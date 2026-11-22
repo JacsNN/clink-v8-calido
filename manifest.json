@@ -1,0 +1,17 @@
+{
+  "version": "v8-calido-1.0.0",
+  "sounds": [
+    {
+      "id": "v8-calido",
+      "name": "V8 Cálido",
+      "version": "v8-calido-1.0.0",
+      "asset": {
+        "path": "v8-calido.clinkpack",
+        "url": "https://github.com/JacsNN/clink-v8-calido/releases/download/v8-calido-1.0.0/v8-calido.clinkpack",
+        "sha256": "f1dbe528d30deddbbc3461f54d71a728a35319cc455a5db51381a74c4cebeb87",
+        "byteCount": 24373
+      },
+      "platform": "android"
+    }
+  ]
+}
