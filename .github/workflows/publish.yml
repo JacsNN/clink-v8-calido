@@ -1,0 +1,38 @@
+name: Build original V8 Calido sound pack
+on:
+  push:
+    branches: [main]
+    paths:
+      - "tools/generate.py"
+      - ".github/workflows/publish.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate and validate original sounds
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: python3 tools/generate.py
+      - name: Publish verified immutable release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          tag=$(python3 -c 'import json; print(json.load(open("manifest.json"))["version"])')
+          if ! gh release view "$tag" >/dev/null 2>&1; then
+            gh release create "$tag" Sounds/v8-calido.clinkpack manifest.json --title "V8 Cálido — Original" --notes "Four original synthesized warm key clicks for Clink Android. No Apple/iOS recordings included."
+          fi
+      - name: Commit generated catalog and pack
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add manifest.json Sounds/v8-calido.clinkpack
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish original V8 Cálido sound pack and verified manifest"
+            git push
+          fi
